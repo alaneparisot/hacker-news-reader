@@ -25,7 +25,7 @@ Item, as defined in Hacker News API.
 https://github.com/HackerNews/API#items
 
 Field         |  Description
---------------|-------------------------------------------------------------------
+--------------|-----------------------------------------------------------------
 id            |  The item's unique id.
 deleted       |  true if the item is deleted.
 type          |  The type of item. One of "job", "story", "comment", "poll", or "pollopt".
