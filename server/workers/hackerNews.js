@@ -1,8 +1,8 @@
 const axios = require('axios');
 
-const Item = require('../../models/item');
-const List = require('../../models/list');
-const mongoose = require('./../../db/mongoose');
+const Item = require('../models/item');
+const List = require('../models/list');
+const mongoose = require('../db/mongoose');
 
 const BASE_URL = 'https://hacker-news.firebaseio.com/v0/';
 
