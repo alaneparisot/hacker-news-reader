@@ -4,12 +4,14 @@ const Item = require('../models/item');
 const List = require('../models/list');
 const mongoose = require('../db/mongoose');
 
-const BASE_URL = 'https://hacker-news.firebaseio.com/v0/';
+const BASE_URL = 'https://hacker-news.firebaseio.com/v0';
 
 const FIND_OPTIONS = {
   new: true, // Return created/updated document
   upsert: true // Create new document if no one found
 };
+
+const LIST_IDS = List.getListIds();
 
 const UPDATE_DELAY = 300000; // 5 minutes
 
@@ -26,11 +28,10 @@ axios.defaults.baseURL = BASE_URL;
  */
 async function connect() {
   const createOrUpdateListPromises = [];
-  const listIds = List.getListIds();
 
   await mongoose.connect();
 
-  listIds.forEach((listId) => {
+  LIST_IDS.forEach((listId) => {
     createOrUpdateListPromises.push(_createOrUpdateList(listId));
 
     setInterval(() => {
@@ -41,7 +42,7 @@ async function connect() {
   return Promise.all(createOrUpdateListPromises);
 }
 
-module.exports = {connect};
+module.exports = {BASE_URL, connect};
 
 // Private =====================================================================
 
@@ -55,7 +56,7 @@ async function _createOrUpdateList(listId) {
   try {
     const createOrUpdateItemPromises = [];
 
-    const itemIds = (await axios.get(`${listId}.json`)).data;
+    const itemIds = (await axios.get(`/${listId}.json`)).data;
 
     itemIds.forEach((itemId) => {
       createOrUpdateItemPromises.push(_createOrUpdateItem(itemId));
@@ -81,7 +82,7 @@ async function _createOrUpdateList(listId) {
  */
 async function _createOrUpdateItem(itemId) {
   try {
-    const item = (await axios.get(`item/${itemId}.json`)).data;
+    const item = (await axios.get(`/item/${itemId}.json`)).data;
 
     if (!item) { return; }
 
