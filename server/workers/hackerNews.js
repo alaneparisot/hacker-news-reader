@@ -2,7 +2,6 @@ const axios = require('axios');
 
 const Item = require('../models/item');
 const List = require('../models/list');
-const mongoose = require('../db/mongoose');
 
 const BASE_URL = 'https://hacker-news.firebaseio.com/v0';
 
@@ -29,14 +28,12 @@ axios.defaults.baseURL = BASE_URL;
 async function connect() {
   const createOrUpdateListPromises = [];
 
-  await mongoose.connect();
-
   LIST_IDS.forEach((listId) => {
     createOrUpdateListPromises.push(_createOrUpdateList(listId));
 
     setInterval(() => {
       _createOrUpdateList(listId);
-    }, UPDATE_DELAY);
+    }, UPDATE_DELAY).unref();
   });
 
   return Promise.all(createOrUpdateListPromises);

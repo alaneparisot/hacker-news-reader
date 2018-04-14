@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 /**
- * Connects the app to the database.
+ * Connects the app to database.
  * @returns {Promise<undefined|Error>} Resolves when connected.
  */
 const connect = () => {
@@ -26,4 +26,12 @@ const connect = () => {
   });
 };
 
-module.exports = {connect};
+/**
+ * Disconnects the app from database.
+ * @returns {Promise<undefined>} Resolves when disconnected.
+ */
+const disconnect = () => {
+  return mongoose.disconnect();
+};
+
+module.exports = {connect, disconnect};
