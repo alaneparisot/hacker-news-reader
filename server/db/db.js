@@ -12,7 +12,9 @@ const connect = () => {
       .connect(process.env.MONGODB_URI)
       .then(
         () => {
-          console.log('Connected to database.');
+          if (process.env.NODE_ENV !== 'test') {
+            console.log('Connected to database.');
+          }
           return resolve();
         },
         (err) => {

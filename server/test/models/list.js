@@ -1,8 +1,8 @@
 const expect = require('chai').expect;
 
-const List = require('./list');
+const List = require('../../models/list');
 
-describe('List', () => {
+describe('List Model', () => {
 
   it('should rank elements', () => {
     const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => ({
