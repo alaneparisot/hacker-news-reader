@@ -9,7 +9,7 @@ const List = require('./../models/list');
 const db = require('../db/db');
 
 const BASE_URL = hackerNewsWorker.BASE_URL;
-const ITEM_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const ITEM_IDS = [1, 2, 3];
 
 const LIST_IDS = List.getListIds();
 
@@ -40,12 +40,8 @@ describe('Hacker News Worker', () => {
       const randomList = await List.findById(LIST_IDS[3]);
       expect(randomList.elements.length).to.equal(ITEM_IDS.length);
 
-      randomList.elements.forEach((element) => {
-        expect(element.rank).to.equal(_getExpectedRank(element.item._id));
-      });
-
-      const randomItem = await Item.findById(5);
-      expect(randomItem.title).to.equal('hnworker-item-5');
+      const randomItem = await Item.findById(2);
+      expect(randomItem.title).to.equal('hnworker-item-2');
     });
 
   });
@@ -53,21 +49,6 @@ describe('Hacker News Worker', () => {
 });
 
 // Private =====================================================================
-
-function _getExpectedRank(itemId) {
-  switch (itemId) {
-    case 10:
-      return 3;
-    case 9:
-    case 8:
-      return 2;
-    case 7:
-    case 6:
-      return 1;
-    default:
-      return 0;
-  }
-}
 
 function _stubRequests() {
   LIST_IDS.forEach((listId) => {
