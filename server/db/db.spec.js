@@ -1,15 +1,20 @@
 require('./../config/config');
 
 const expect = require('chai').expect;
-const globalMongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-const mongoose = require('./../db/mongoose');
+const db = require('./db');
 
-describe.only('Mongoose', () => {
+describe('DB', () => {
 
   it('should connect the app to database', async () => {
-    await mongoose.connect();
-    console.log(globalMongoose.connection.readyState);
+    await db.connect();
+    expect(mongoose.connection.readyState).to.equal(1);
+  });
+
+  it('should disconnect the app to database', async () => {
+    await db.disconnect();
+    expect(mongoose.connection.readyState).to.equal(0);
   });
 
 });

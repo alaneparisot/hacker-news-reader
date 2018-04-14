@@ -6,7 +6,7 @@ const moxios = require('moxios');
 const hackerNewsWorker = require('./hackerNews');
 const Item = require('./../models/item');
 const List = require('./../models/list');
-const mongoose = require('./../db/mongoose');
+const db = require('../db/db');
 
 const BASE_URL = hackerNewsWorker.BASE_URL;
 const ITEM_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -20,14 +20,14 @@ describe('Hacker News Worker', () => {
     _stubRequests();
 
     beforeEach(async () => {
-      await mongoose.connect();
+      await db.connect();
       await List.remove({});
       await Item.remove({});
       moxios.install();
     });
 
     afterEach(async () => {
-      await mongoose.disconnect();
+      await db.disconnect();
       moxios.uninstall();
     });
 
