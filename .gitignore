@@ -1,6 +1,7 @@
 # Code Coverage
 .nyc_output/
 .coveralls.yml
+coverage/
 
 # Config
 server/config/config.json

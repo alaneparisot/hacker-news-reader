@@ -7,24 +7,15 @@ mongoose.Promise = global.Promise;
  * @returns {Promise<undefined|Error>} Resolves when connected.
  */
 const connect = () => {
-  return new Promise((resolve, reject) => {
-    mongoose
-      .connect(process.env.MONGODB_URI)
-      .then(
-        () => {
-          if (process.env.NODE_ENV !== 'test') {
-            console.log('Connected to database.');
-          }
-          return resolve();
-        },
-        (err) => {
-          throw new Error(err);
-        }
-      )
-      .catch((err) => {
-        console.error('Unable to connect to database.\n', err);
-        return reject(err);
-      });
+  return new Promise(async (resolve, reject) => {
+    try {
+      const client = await mongoose.connect(process.env.MONGODB_URI);
+      console.info(`Connected to database ${client.connections[0].name}.`);
+      return resolve();
+    } catch (err) {
+      console.error('Unable to connect to database.\n', err);
+      return reject(err);
+    }
   });
 };
 

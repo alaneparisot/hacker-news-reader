@@ -19,10 +19,10 @@ app.use('/api/list', listRoute);
 
 db.connect().then(() => {
   hackerNewsWorker.connect().then(() => {
-    console.log('First update of lists and items has been successful.');
+    console.info('First update of lists and items has been successful.');
   });
 });
 
 server.listen(port, () => {
-  console.log(`Server is running on port ${port}.`);
+  console.info(`Server is running on port ${port}.`);
 });
