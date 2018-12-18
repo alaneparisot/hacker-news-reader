@@ -1,8 +1,8 @@
 {
   "name": "hacker-news-reader",
-  "version": "0.3.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.3.1",
+  "description": "Hopefully, a more pleasant way to experience Hacker News.",
+  "main": "server/server.js",
   "scripts": {
     "start": "node server/server.js",
     "start-watch": "nodemon server/server.js",
