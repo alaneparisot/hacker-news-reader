@@ -11,3 +11,6 @@ server/config/config.json
 
 # NPM
 node_modules/
+
+# Misc.
+bash.exe.stackdump

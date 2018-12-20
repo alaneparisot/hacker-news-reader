@@ -1,6 +1,6 @@
 require('../../config/config');
 
-const expect = require('chai').expect;
+const {expect} = require('chai');
 const moxios = require('moxios');
 
 const hackerNewsWorker = require('../../workers/hackerNews');

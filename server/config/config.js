@@ -11,11 +11,15 @@ if (env === 'development' || env === 'test') {
 Example of config.json:
 {
   "development": {
-    "MONGODB_URI": "mongodb://localhost:27017/HackerNewsReader",
+    "BCRYPT_SALT_ROUNDS": 10,
+    "JWT_SECRET_OR_PRIVATE_KEY": "shhhhh",
+    "MONGODB_URI": "mongodb://127.0.0.1:27017/HackerNewsReader",
     "PORT": 3000
   },
   "test": {
-    "MONGODB_URI": "mongodb://localhost:27017/HackerNewsReaderTest",
+    "BCRYPT_SALT_ROUNDS": 10,
+    "JWT_SECRET_OR_PRIVATE_KEY": "shhhhh",
+    "MONGODB_URI": "mongodb://127.0.0.1:27017/HackerNewsReaderTest",
     "PORT": 3000
   }
 }

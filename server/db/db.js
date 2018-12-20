@@ -9,7 +9,7 @@ mongoose.Promise = global.Promise;
 const connect = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      const client = await mongoose.connect(process.env.MONGODB_URI);
+      const client = await mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true});
       console.info(`Connected to database ${client.connections[0].name}.`);
       return resolve();
     } catch (err) {
