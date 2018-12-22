@@ -99,11 +99,35 @@ describe('/users', () => {
           .send({email, password})
           .expect(400)
           .expect(async (res) => {
-            console.log('alane -> res', res.headers);
             expect(res.headers['x-auth']).to.not.exist;
 
             const user = await User.findById(users[0]._id);
             expect(user.tokens.length).to.equal(0);
+          });
+    });
+
+  });
+
+  describe('GET /users/me', () => {
+    it('should return user if authenticated', async () => {
+      await
+        request(app)
+          .get('/api/users/me')
+          .set('x-auth', users[0].tokens[0].token)
+          .expect(200)
+          .expect((res) => {
+            expect(res.body._id).to.equal(users[0]._id.toHexString());
+            expect(res.body.email).to.equal(users[0].email);
+          });
+    });
+
+    it('should return 401 if not authenticated', async () => {
+      await
+        request(app)
+          .get('/api/users/me')
+          .expect(401)
+          .expect((res) => {
+            expect(res.body).to.be.deep.equal({});
           });
     });
 

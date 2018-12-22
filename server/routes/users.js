@@ -1,6 +1,7 @@
 const express = require('express');
 
 const {User} = require('../models/user');
+const {authenticate} = require('../middleware/authenticate');
 
 const router = express.Router();
 
@@ -30,6 +31,11 @@ router.post('/login', async (req, res) => {
   } catch (e) {
     res.status(400).send({error: e.message});
   }
+});
+
+router.get('/me', authenticate, (req, res) => {
+  const {_id, email, tokens} = req.user;
+  res.send({_id, email, tokens});
 });
 
 module.exports = router;

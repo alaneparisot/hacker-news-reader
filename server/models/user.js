@@ -35,17 +35,21 @@ const userSchema = new Schema({
 });
 
 userSchema.methods.generateAuthToken = async function () {
-  const User = this;
+  const user = this;
   const access = 'auth';
   const payload = {
-    _id: User._id.toHexString(),
+    _id: user._id.toHexString(),
     access
   };
 
   const token = jwt.sign(payload, process.env.JWT_SECRET_OR_PRIVATE_KEY).toString();
 
+  user.tokens = user.tokens.filter((item) => item.access !== 'auth');
+
+  user.tokens.push({access, token});
+
   try {
-    await User.save();
+    await user.save();
     return token;
   } catch (e) {
     return new Error(e.message);
@@ -65,6 +69,24 @@ userSchema.statics.findByCredentials = async function (email, password) {
     throw new Error();
   } catch (e) {
     return new Error(`Email or password don't match.`);
+  }
+};
+
+userSchema.statics.findByToken = async function (token) {
+  const User = this;
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_OR_PRIVATE_KEY);
+
+    const user = await User.findOne({
+      '_id': decoded._id,
+      'tokens.token': token,
+      'tokens.access': 'auth'
+    });
+
+    return user;
+  } catch (e) {
+    throw new Error();
   }
 };
 
