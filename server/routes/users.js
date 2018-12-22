@@ -4,17 +4,31 @@ const {User} = require('../models/user');
 
 const router = express.Router();
 
-router.post('/', async (req, res) => {
-  const userData = {email, password} = req.body;
-  const user = new User(userData);
+router.post('/register', async (req, res) => {
+  const {email, password} = req.body;
+
+  const user = new User({email, password});
 
   try {
     await user.save();
     const token = await user.generateAuthToken();
-    res.header('x-auth', token).send(user);
+    const {_id} = user;
+    res.header('x-auth', token).send({_id, email});
   } catch (e) {
-    console.error('Unable to create user.', e);
-    res.status(400).send(e);
+    res.status(400).send({error: e.message});
+  }
+});
+
+router.post('/login', async (req, res) => {
+  const {email, password} = req.body;
+
+  try {
+    const user = await User.findByCredentials(email, password);
+    const token = await user.generateAuthToken();
+    const {_id} = user;
+    res.header('x-auth', token).send({_id, email});
+  } catch (e) {
+    res.status(400).send({error: e.message});
   }
 });
 

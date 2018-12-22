@@ -35,28 +35,44 @@ const userSchema = new Schema({
 });
 
 userSchema.methods.generateAuthToken = async function () {
-  const user = this;
+  const User = this;
   const access = 'auth';
   const payload = {
-    _id: user._id.toHexString(),
+    _id: User._id.toHexString(),
     access
   };
 
   const token = jwt.sign(payload, process.env.JWT_SECRET_OR_PRIVATE_KEY).toString();
 
   try {
-    await user.save();
+    await User.save();
     return token;
   } catch (e) {
-    console.error('Unable to save user while generating authentication token.', e);
+    return new Error(e.message);
+  }
+};
+
+userSchema.statics.findByCredentials = async function (email, password) {
+  const User = this;
+
+  try {
+    const user = await User.findOne({email});
+
+    if (user && await bcrypt.compare(password, user.password)) {
+      return user;
+    }
+
+    throw new Error();
+  } catch (e) {
+    return new Error(`Email or password don't match.`);
   }
 };
 
 userSchema.pre('save', async function (next) {
-  const user = this;
+  const User = this;
 
-  if (user.isModified('password')) {
-    user.password = await bcrypt.hash(user.password, +process.env.BCRYPT_SALT_ROUNDS);
+  if (User.isModified('password')) {
+    User.password = await bcrypt.hash(User.password, +process.env.BCRYPT_SALT_ROUNDS);
     next();
   } else {
     next();
