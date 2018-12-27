@@ -19,8 +19,8 @@ describe('Hacker News Worker', () => {
 
   beforeEach(async () => {
     await db.connect();
-    await List.remove({});
-    await Item.remove({});
+    await List.deleteMany({});
+    await Item.deleteMany({});
     moxios.install();
   });
 
@@ -32,7 +32,7 @@ describe('Hacker News Worker', () => {
   it('should save data from Hacker News API into database', async () => {
     await hackerNewsWorker.connect();
 
-    const listCount = await List.count({});
+    const listCount = await List.countDocuments({});
     expect(listCount).to.equal(LIST_IDS.length);
 
     const randomList = await List.findById(LIST_IDS[3]);

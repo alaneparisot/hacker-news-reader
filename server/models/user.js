@@ -56,6 +56,16 @@ userSchema.methods.generateAuthToken = async function () {
   }
 };
 
+userSchema.methods.removeToken = async function (token) {
+  const user = this;
+
+  await user.updateOne({
+    $pull: {
+      tokens: {token}
+    }
+  });
+};
+
 userSchema.statics.findByCredentials = async function (email, password) {
   const User = this;
 

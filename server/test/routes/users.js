@@ -133,4 +133,18 @@ describe('/users', () => {
 
   });
 
+  describe('DELETE /users/logout', () => {
+    it('should remove auth token on logout', async () => {
+      await
+        request(app)
+          .delete('/api/users/logout')
+          .set('x-auth', users[0].tokens[0].token)
+          .expect(200)
+          .expect(async () => {
+            const user = await User.findById(users[0]._id);
+            expect(user.tokens.length).to.equal(0);
+          });
+    });
+  });
+
 });

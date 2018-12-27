@@ -24,7 +24,7 @@ const users = [{
 }];
 
 const populateUsers = async () => {
-  await User.remove({});
+  await User.deleteMany({});
 
   // TODO: map
   const userOne = new User(users[0]).save();

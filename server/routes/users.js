@@ -33,6 +33,15 @@ router.post('/login', async (req, res) => {
   }
 });
 
+router.delete('/logout', authenticate, async (req, res) => {
+  try {
+    await req.user.removeToken(req.token);
+    res.status(200).send();
+  } catch (e) {
+    res.status(400).send({error: e.message});
+  }
+});
+
 router.get('/me', authenticate, (req, res) => {
   const {_id, email, tokens} = req.user;
   res.send({_id, email, tokens});
